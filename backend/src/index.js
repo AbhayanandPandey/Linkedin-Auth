@@ -1,13 +1,17 @@
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
+const cors = require('cors');
 require('dotenv').config();
-const dotenv = require('dotenv');
-dotenv.config()
 
 const authRoutes = require('./routes/auth.route');
 
 const app = express();
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+}));
 
 app.use(
   session({
@@ -21,5 +25,5 @@ app.use(passport.session());
 
 app.use('/auth', authRoutes);
 
-const PORT = process.env.PORT ;
+const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));

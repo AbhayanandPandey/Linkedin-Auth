@@ -8,7 +8,6 @@ const { logoutUser } = require('../controllers/auth.controller');
 const router = express.Router();
 
 dotenv.config();
-
 router.use(cookieParser());
 
 passport.use(new LinkedInStrategy({
@@ -16,7 +15,7 @@ passport.use(new LinkedInStrategy({
   clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
   callbackURL: process.env.CALLBACK_URL,
   scope: ['r_emailaddress', 'r_liteprofile'],
-}, function (accessToken, refreshToken, profile, done) {
+}, function (accessToken, refreshToken, profile, done){
   console.log('LinkedIn profile:', profile);
   return done(null, profile);
 }));
@@ -30,13 +29,15 @@ router.get('/linkedin', (req, res) => {
     client_id: process.env.LINKEDIN_CLIENT_ID,
     redirect_uri: process.env.CALLBACK_URL,
     state: Math.random().toString(36).substring(2, 15),
-    scope: 'r_liteprofile r_emailaddress',
+    scope: ['r_emailaddress', 'r_liteprofile'],
   });
 
   res.redirect(`https://www.linkedin.com/oauth/v2/authorization?${params.toString()}`);
+  
 });
 
 router.get('/linkedin/callback',
+    
   passport.authenticate('linkedin', { failureRedirect: `${process.env.FRONTEND_URL}` }),
   (req, res) => {
     const user = req.user;
