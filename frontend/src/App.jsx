@@ -1,12 +1,23 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import Home from './components/Home'
+import Dashboard from './components/Dashboard'
+import { Routes, Route } from 'react-router-dom'
+import PrivateRouter from './components/PrivateRouter'
 
 function App() {
 
   return (
     <>
-      
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element=
+          {
+          <PrivateRouter >
+            {<Dashboard />}
+          </PrivateRouter>
+          }
+        />
+      </Routes>
     </>
   )
 }
